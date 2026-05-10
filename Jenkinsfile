@@ -23,8 +23,8 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh """
-                kubectl apply -f k8s/flask-deployment.yaml
-                kubectl apply -f k8s/flask-service.yaml
+                kubectl apply -f k8s/deployment.yaml
+                kubectl apply -f k8s/service.yaml
                 """
             }
         }
@@ -32,7 +32,7 @@ pipeline {
         stage('Restart Deployment (Rollout Update)') {
             steps {
                 sh """
-                kubectl rollout restart deployment flask-deployment
+                kubectl rollout restart deployment deployment
                 """
             }
         }
