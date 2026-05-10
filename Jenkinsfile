@@ -32,7 +32,7 @@ pipeline {
         stage('Restart Deployment (Rollout Update)') {
             steps {
                 sh """
-                kubectl rollout restart deployment deployment
+                kubectl rollout restart deployment flask-app
                 """
             }
         }
