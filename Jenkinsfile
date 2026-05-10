@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "flask-app"
+    }
+
     stages {
 
         stage('Clone Repository') {
@@ -12,22 +16,33 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t flask-app .'
+                sh "docker build -t ${IMAGE_NAME}:latest ."
             }
         }
 
-        stage('Stop Old Container') {
+        stage('Deploy to Kubernetes') {
             steps {
-                sh '''
-                docker stop flask-container || true
-                docker rm flask-container || true
-                '''
+                sh """
+                kubectl apply -f k8s/flask-deployment.yaml
+                kubectl apply -f k8s/flask-service.yaml
+                """
             }
         }
 
-        stage('Run Docker Container') {
+        stage('Restart Deployment (Rollout Update)') {
             steps {
-                sh 'docker run -d --name flask-container -p 5000:5000 flask-app'
+                sh """
+                kubectl rollout restart deployment flask-deployment
+                """
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                sh """
+                kubectl get pods
+                kubectl get svc
+                """
             }
         }
 
