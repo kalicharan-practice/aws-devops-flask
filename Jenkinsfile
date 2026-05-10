@@ -10,7 +10,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/your-repo.git'
+                git branch: 'main', url: 'https://github.com/kalicharan-practice/aws-devops-flask.git'
             }
         }
 
