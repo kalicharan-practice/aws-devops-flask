@@ -51,5 +51,23 @@ pipeline {
                 """
             }
         }
+
+        stage('Verify Deployment') {
+            steps {
+                sh """
+                echo "=== POD STATUS ==="
+                kubectl get pods
+
+                echo "=== SERVICE STATUS ==="
+                kubectl get svc
+
+                echo "=== DEPLOYMENT STATUS ==="
+                kubectl get deployments
+
+                echo "=== ROLLOUT STATUS ==="
+                kubectl rollout status deployment flask-deployment
+                """
+            }
+        }
     }
 }
