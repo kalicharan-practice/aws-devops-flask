@@ -56,7 +56,7 @@ pipeline {
             steps {
                 sh """
                 echo "=== POD STATUS ==="
-                kubectl get pods
+                kubectl get pods -o wide
 
                 echo "=== SERVICE STATUS ==="
                 kubectl get svc
@@ -64,8 +64,14 @@ pipeline {
                 echo "=== DEPLOYMENT STATUS ==="
                 kubectl get deployments
 
-                echo "=== ROLLOUT STATUS ==="
-                kubectl rollout status deployment flask-deployment
+                echo "=== WAITING 30 SECONDS ==="
+                sleep 30
+
+                echo "=== FINAL POD STATUS ==="
+                kubectl get pods
+
+                echo "=== POD DESCRIBE ==="
+                kubectl describe deployment flask-deployment
                 """
             }
         }
