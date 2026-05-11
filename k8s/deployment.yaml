@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
       - name: flask-container
-        image: flask-app:latest
+        image: kalicharandas001/aws-devops-flask-app:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
